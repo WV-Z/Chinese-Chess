@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中国象棋 - 单机版</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- 头部 -->
+        <header class="game-header">
+            <h1>🏮 中国象棋</h1>
+            <p class="subtitle">单机版 · 人机对战</p>
+        </header>
+
+        <!-- 游戏信息栏 -->
+        <div class="game-info">
+            <div class="info-item">
+                <span class="info-label">游戏模式</span>
+                <span class="info-value" id="gameMode">双人模式</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">当前回合</span>
+                <span class="info-value" id="currentTurn">🔴 红方</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">步数</span>
+                <span class="info-value" id="moveCount">0</span>
+            </div>
+        </div>
+
+        <!-- 游戏主区域 -->
+        <div class="game-main">
+            <!-- 棋盘区域 -->
+            <div class="board-container">
+                <canvas id="boardCanvas" width="450" height="500"></canvas>
+            </div>
+
+            <!-- 信息面板 -->
+            <div class="info-panel">
+                <div class="panel-section">
+                    <h3>📋 游戏记录</h3>
+                    <div class="move-history" id="moveHistory">
+                        <div class="history-empty">暂无走棋记录</div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>💡 提示</h3>
+                    <div class="tips" id="gameTips">
+                        点击棋子选择，再点击目标位置移动
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>🏆 被吃棋子</h3>
+                    <div class="captured-pieces">
+                        <div class="captured-group">
+                            <span class="captured-label">红方:</span>
+                            <div class="captured-list" id="capturedRed"></div>
+                        </div>
+                        <div class="captured-group">
+                            <span class="captured-label">黑方:</span>
+                            <div class="captured-list" id="capturedBlack"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 控制按钮 -->
+        <div class="game-controls">
+            <button class="btn btn-primary" onclick="game.newGame('single')">
+                🎮 单人模式
+            </button>
+            <button class="btn btn-secondary" onclick="game.newGame('double')">
+                👥 双人模式
+            </button>
+            <button class="btn btn-warning" onclick="game.undo()">
+                ↩️ 悔棋
+            </button>
+            <button class="btn btn-info" onclick="game.showHint()">
+                💡 提示
+            </button>
+            <button class="btn btn-danger" onclick="game.restart()">
+                🔄 重新开始
+            </button>
+        </div>
+
+        <!-- 游戏结束弹窗 -->
+        <div class="modal" id="gameOverModal">
+            <div class="modal-content">
+                <h2 id="winnerText">🎉 红方获胜！</h2>
+                <p id="gameResult">将军！对方无路可走</p>
+                <div class="modal-buttons">
+                    <button class="btn btn-primary" onclick="game.newGame('single')">
+                        🎮 单人模式
+                    </button>
+                    <button class="btn btn-secondary" onclick="game.newGame('double')">
+                        👥 双人模式
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设置弹窗 -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-content modal-small">
+                <h2>⚙️ 游戏设置</h2>
+                <div class="settings-form">
+                    <div class="form-group">
+                        <label>难度等级</label>
+                        <select id="difficulty">
+                            <option value="1">简单</option>
+                            <option value="2" selected>中等</option>
+                            <option value="3">困难</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>棋子风格</label>
+                        <select id="pieceStyle">
+                            <option value="text">文字</option>
+                            <option value="icon">图标</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="showHint" checked>
+                            显示走棋提示
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="soundEnabled" checked>
+                            启用音效
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn btn-primary" onclick="game.saveSettings()">
+                        保存
+                    </button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('settingsModal').classList.remove('active')">
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 音效 -->
+    <audio id="moveSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU" type="audio/wav">
+    </audio>
+
+    <script src="js/pieces.js"></script>
+    <script src="js/board.js"></script>
+    <script src="js/rules.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
